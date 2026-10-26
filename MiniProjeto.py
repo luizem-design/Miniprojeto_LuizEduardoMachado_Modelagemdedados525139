@@ -4,7 +4,7 @@ import pandas as pd
 # Dica: se houver erro de caracteres estranhos nos nomes dos produtos, adicione encoding="latin1" após o sep=";"
 df = pd.read_csv("Base Varejo.csv", sep=";")
 
-# Informações gerais sobre o DataFrame (descomentado para exibir no terminal)
+# Informações gerais sobre o DataFrame 
 print("Números de registros:", df.shape[0])
 print("Números de colunas:", df.shape[1])
 print("\nColunas:")
@@ -33,7 +33,7 @@ print(len(datas_invalidas))
 
 df_limpo = df.copy()
 
-# Removendo colunas com valores nulos (ex: as 'Unnamed' que vieram na exportação)
+# Removendo colunas com valores nulos
 colunas_vazias = df_limpo.columns[df_limpo.isna().any()].tolist()
 df_limpo = df_limpo.drop(columns=colunas_vazias)
 
@@ -46,7 +46,7 @@ print("\nTipos após limpeza:")
 print(df_limpo.dtypes)
 print(df_limpo.shape)
 
-# Linhas totalmente idênticas em todos os campos são duplicações, então vamos removê-las
+# Linhas totalmente idênticas em todos os campos são duplicações, então removi
 registros_antes = len(df_limpo)
 
 # Mantêm a primeira e remove as demais iguais
@@ -62,9 +62,7 @@ print("Colunas restantes:", df_limpo.shape[1])
 print("Duplicatas restantes:", df_limpo.duplicated().sum())
 
 
-# ==========================================
 # ETAPA 4: Estatísticas descritivas (CL_FHL)
-# ==========================================
 print("\n--- 4. ESTATÍSTICAS DESCRITIVAS: NÚMERO DE FILHOS (CL_FHL) ---")
 print(f"Contagem: {df_limpo['CL_FHL'].count()}")
 print(f"Média: {df_limpo['CL_FHL'].mean():.2f}")
@@ -75,9 +73,7 @@ print(f"Máximo: {df_limpo['CL_FHL'].max()}")
 print(f"Mínimo: {df_limpo['CL_FHL'].min()}")
 
 
-# ==========================================
 # ETAPA 5: Padrões de Agrupamento
-# ==========================================
 print("\n--- 5. PADRÕES DE AGRUPAMENTO ---")
 
 # Agrupamento 1: Quantidade de produtos comprados por Gênero
@@ -93,11 +89,13 @@ print("\nTop 5 Categorias de Produtos Mais Vendidas:")
 print(vendas_por_categoria.head())
 
 
-# ==========================================
 # ETAPA 6: Conclusões
-# ==========================================
 print("\n--- 6. CONCLUSÕES ---")
 print("- A base possuía colunas vazias residuais (prováveis erros de exportação), que foram removidas dinamicamente ao mapear valores nulos.")
 print("- A conversão da coluna DATA para datetime foi bem-sucedida, não havendo resíduos de formatos de data corrompidos, o que viabiliza análises temporais.")
 print("- As estatísticas da coluna CL_FHL ajudam a traçar o perfil demográfico, mostrando a média de dependentes dos clientes para futuras campanhas direcionadas.")
 print("- A base precisou passar por deduplicação estrita, garantindo que compras idênticas lançadas em duplicidade não inflem os resultados dos agrupamentos.")
+
+#Exportação da base limpa
+df_limpo.to_csv("df_limpo.csv", index=False, encoding="utf-8-sig", sep=";")
+print("\nArquivo df_limpo salvo com sucesso!")
